@@ -31,7 +31,7 @@ df <- df[,-1] %>%
   mutate(model_ID = paste(Haun, model, altitude)) %>% 
   dplyr::select(-RMSE, -Rsquared, -MAE)
 
-df2 <- read.csv("resamples_R_PCR_4-fold_10repeatedcv2.csv", header = T) 
+df2 <- read.csv("resamples_R_PCR_4-fold_10repeatedcv.csv", header = T) 
 df2 <- df2[,-1] %>% 
   merge(haun, by = "date") %>% 
   mutate(model_ID = paste(Haun, model, altitude)) %>% 
@@ -115,40 +115,6 @@ HSD_pwpm <- pwpm(em, alpha = p, adjust = 'Tukey')
 HSD_Ridge <- cld(em, alpha= p, Letters = letters, sort= F, adjust = 'Tukey')
 HSD_Ridge
 
-# 
-# RF <- data[data$model == "RF",]
-# 
-# 
-# RF_order <- c("2.6 - 2.8 RF ground", 
-#                  "2.6 - 2.8 RF 15m", 
-#                  "2.6 - 2.8 RF 30m", 
-#                  "2.6 - 2.8 RF 50m", 
-#                  "3 - 3.2 RF ground",
-#                  "3 - 3.2 RF 15m",
-#                  "3 - 3.2 RF 30m",
-#                  "3 - 3.2 RF 50m",
-#                  "5.7 - 5.9 RF ground",
-#                  "5.7 - 5.9 RF 15m",
-#                  "5.7 - 5.9 RF 30m",
-#                  "5.7 - 5.9 RF 50m",
-#                  "7.1 - 7.3 RF 50m",
-#                  "8.5 - 9 RF 50m",
-#                  "10.5 - 11.1 RF 50m",
-#                  "10.9 - 11.5 RF 50m")
-# 
-# RF$model_ID <- factor(RF$model_ID, levels = RF_order)
-# 
-# lm <- aov(MAPE_overall ~ model_ID, data = RF)
-# an <- anova(lm)
-# 
-# variance_RF <- an$`Sum Sq`[1]/(an$`Sum Sq`[1] + an$`Sum Sq`[2])
-# 
-# em <- emmeans(lm, ~ model_ID, mode = "kenward-roger", na.rm =TRUE)
-# p <- 0.05
-# HSD_pwpm <- pwpm(em, alpha = p, adjust = 'Tukey')
-# HSD_RF <- cld(em, alpha= p, Letters = letters, sort= F, adjust = 'Tukey')
-# HSD_RF
-
 
 summary_data_1 <- data %>% 
   group_by(model_ID, model, altitude, Sowing_density, Haun) %>% 
@@ -192,21 +158,22 @@ HSD_df$altitude <- factor(HSD_df$altitude, levels = c("ground","15m", "30m", "50
 p1 <- ggplot(HSD_df, aes(y = MAPE_overall, fill = altitude, x = Haun)) +
   geom_errorbar(aes(ymin = MAPE_overall - 0.5, ymax = MAPE_overall + MAPESD_overall), width = 0.2, position = position_dodge(0.9)) +
   geom_bar(stat = "identity", position = "dodge") +
-  geom_text(aes(y= MAPE_overall + MAPESD_overall + 5, label = gsub(" ", "", .group) ),
-            position= position_dodge(0.9)) +
+  geom_text(aes(y= MAPE_overall + MAPESD_overall + 7, label = gsub(" ", "", .group) ),
+            position= position_dodge(0.9), size=5) +
   facet_grid(model~ ., scales = "free", switch = "both", space = "free") +
   scale_fill_manual(values = cbPalette) +
-  ggtitle(expression("Density Prediction 2022 Model Performance")) + 
+  ggtitle(expression("Density Prediction 2022 Model Performance (training)")) + 
   xlab("Haun stage") +
   ylab("Mean Absolute Percentage Error") +
   scale_y_continuous(limits = c(0, 140), breaks = seq(0, 120, 20))+
   theme_bw()+
   theme(axis.title = element_text(size = 20),
-        plot.title = element_text(size = 15),
-        axis.text.x = element_text(angle = 45, vjust = 0.9, hjust = 0.9, size = 15), # angle = 45, vjust = 0.9, hjust = 0.9,
-        strip.text = element_text(size = 12),
-        legend.text = element_text(size = 15),
-        legend.title = element_text(size = 18))+
+        plot.title = element_text(size = 25),
+        axis.text.x = element_text(angle = 45, vjust = 0.9, hjust = 0.9, size = 20),
+        axis.text.y = element_text( size = 18),# angle = 45, vjust = 0.9, hjust = 0.9,
+        strip.text = element_text(size = 20),
+        legend.text = element_text(size = 18),
+        legend.title = element_text(size = 20))+
   labs(fill = "Altitude")
 
 p1

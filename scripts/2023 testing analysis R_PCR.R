@@ -180,25 +180,28 @@ p1 <- ggplot(df7_c, aes(x = Haun_test, y = MAPE_overall, fill = altitude_test)) 
                                          "\nmean MAE: ", round(mean_MAE, 2), " (SD: ", round(sd_MAE, 2), ")",
                                          "\nmean MAPE: ", round(mean_MAPE, 2), " (SD: ", round(sd_MAPE, 2), ")"
                                        )),
-            vjust = 1.1, hjust = 1.01, size = 4, color = "black", show.legend = FALSE) +
+            vjust = 1.1, hjust = 1.01, size = 4.3, color = "black", show.legend = FALSE) +
   facet_wrap(densgroup ~ .) +
   labs(fill = "Test Altitude") +
   scale_fill_manual(values = cbPalette) +
-  ggtitle(paste(unique(df7$model_ID), " performance in 2023 data")) +
+  ggtitle(paste(unique(df7$model_ID), "performance in 2023 data (testing)")) +
   theme_bw() +
   ylab("Mean Absolute Percentage Error") +
-  theme(axis.title = element_text(size = 16),
-        plot.title = element_text(size = 16),
-        axis.text.x = element_text(angle = 45, vjust = 0.9, hjust = 0.9, size = 12),
-        strip.text = element_text(size = 12)) +
+  theme(axis.title = element_text(size = 18),
+        plot.title = element_text(size = 20),
+        axis.text.x = element_text(angle = 45, vjust = 0.9, hjust = 0.9, size = 15),
+        axis.text.y = element_text( size = 18),
+        strip.text = element_text(size = 18), 
+        legend.text = element_text(size = 15),
+        legend.title = element_text(size = 15)) +
   xlab("2023 Test stage") +
   scale_y_continuous(limits = c(0, 225), breaks = seq(0, 225, 25))
 
 p1
-#setwd(fig.dir)
-#png(paste(unique(df7$model_ID), ".png", sep ="_"), width = 8, height = 8, units = 'in', res = 300)
-#plot(p1)
-#dev.off()
+setwd(fig.dir)
+png(paste(unique(df7$model_ID), ".png", sep ="_"), width = 9, height = 8, units = 'in', res = 300)
+plot(p1)
+dev.off()
 
 
 #### Visualize over prediction for 35 and 70 classes #####
@@ -237,28 +240,28 @@ p2 <- ggplot(plot_data, aes(x = Actual_density, y = Prediction,
   labs(color = "Sowing Density", shape = "Sowing Density")+
   theme_minimal()+
   theme(
-    plot.title = element_text(size = 11, hjust = 0.5),
-    axis.title = element_text(size = 10),
-    strip.text.x = element_text(size = 10), 
-    strip.text.y = element_text(size = 10), 
+    plot.title = element_text(size = 14),
+    axis.title = element_text(size = 15),
+    strip.text.x = element_text(size = 12), 
+    strip.text.y = element_text(size = 12), 
     
-    axis.text.x = element_text(size = 10),  
-    axis.text.y = element_text(size = 10),
-    legend.text = element_text(size = 8), 
-    legend.title = element_text(size = 8),
+    axis.text.x = element_text(size = 12),  
+    axis.text.y = element_text(size = 12),
+    legend.text = element_text(size = 12), 
+    legend.title = element_text(size = 12),
     legend.position = "top",  # Adjust the legend position
     legend.box.margin = margin(0, 0, 0, 10)  # Add margin to the legend box
   ) +
   geom_text(data = plot_data, aes(label = paste("R-squared: ", round(Rsquared, 2), "\nMAE: ", round(MAE, 2), "\nMAPE: ", round(MAPE, 2))),
-            x = -Inf, y = Inf, vjust = 1, hjust = 0, size = 2.5, color = "black", show.legend = FALSE)
+            x = -Inf, y = Inf, vjust = 1, hjust = 0, size = 4.5, color = "black", show.legend = FALSE)
 p2
 
 
 
-# setwd(fig.dir)
-# png(paste(unique(data$model_ID), "pred_vs_dens_comparison.png", sep ="_"), width = 4, height = 8, units = 'in', res = 300)
-# plot(p2)
-# dev.off()
+setwd(fig.dir)
+png(paste(unique(data$model_ID), "pred_vs_dens_comparison.png", sep ="_"), width = 4, height = 8, units = 'in', res = 300)
+plot(p2)
+dev.off()
 
 ## Predicted vs actual density plot ##
 
@@ -432,20 +435,20 @@ p4 <- ggplot(data, aes(x = Actual_density, y = Prediction,
   labs(color = "Sowing Density", shape = "Sowing Density")+
   theme_minimal()+
   theme(
-    plot.title = element_text(size = 14, hjust = 0.5),
-    axis.title = element_text(size = 12),
+    plot.title = element_text(size = 15, hjust = 0.5),
+    axis.title = element_text(size = 14),
     strip.text.x = element_text(size = 10), 
     strip.text.y = element_text(size = 10), 
     
-    axis.text.x = element_text(size = 8),  
-    axis.text.y = element_text(size = 8),
-    legend.text = element_text(size = 10), 
-    legend.title = element_text(size = 10),
+    axis.text.x = element_text(size = 9.5),  
+    axis.text.y = element_text(size = 13),
+    legend.text = element_text(size = 13), 
+    legend.title = element_text(size = 13),
     legend.position = "top",  # Adjust the legend position
     legend.box.margin = margin(0, 0, 0, 10)  # Add margin to the legend box
   ) +
   geom_text(data = data, aes(label = paste("R-squared: ", round(Rsquared, 2), "\nMAE: ", round(MAE, 2), "\nMAPE: ", round(MAPE, 2))),
-            x = -Inf, y = Inf, vjust = 1, hjust = 0, size = 2.5, color = "black", show.legend = FALSE)
+            x = -Inf, y = Inf, vjust = 1, hjust = 0, size = 3.5, color = "black", show.legend = FALSE)
 p4
 
 
